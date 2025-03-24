@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook Giveaway</title>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "43138956-e594-4d8f-b24f-aa8ec45ad652",
+            });
+        });
+    </script>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -12,11 +21,17 @@
             color: white; 
         }
         .container { 
-            margin-top: 100px; 
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            width: 100%;
         }
         .winner { 
             font-size: 24px; 
             font-weight: bold; 
+            margin-top: 20px;
         }
         .form-container {
             background: white;
